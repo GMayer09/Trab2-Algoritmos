@@ -23,9 +23,23 @@ class Jogo:
     vis_gol: int
 
 
-def classificacao(jogo: Jogo, criterio: CriterioDesempate) -> int:
+def classificacao(jogo: list[Jogo], criterio: CriterioDesempate) -> int:
     '''
     A função vai receber um jogo *jogo: Jogo* e criterio *criterio: CriterioDesempate*,
     vai calcular a tabela dos times em relação aos jogos e vai retornar um inteiro.
     Exemplos:
     '''
+    i: int = 0
+    anfiGol = jogo[i].anf_gol
+    visGol = jogo[i].vis_gol
+    cont_anf = 0 
+    cont_vis = 0
+    while i < len(jogo):
+        if criterio == CriterioDesempate.PONTO:
+            if anfiGol > visGol:
+                cont_anf += 3
+            elif visGol > anfiGol:
+                cont_vis += 3
+            else:
+                cont_anf += 1
+                cont_vis += 1
