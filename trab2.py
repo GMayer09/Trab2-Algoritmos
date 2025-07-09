@@ -25,6 +25,9 @@ class Time:
     derrota: int
     gol_marcado: int
     gol_contra: int
+    jogos_anf: int
+    jogos_vis: int
+
 
 @dataclass
 class Jogo:
@@ -37,13 +40,19 @@ class Jogo:
     visitante: str
     vis_gol: int
 
-def encontra_nome_time(nome: str, lst_times: list[Time]) -> Time:
+def encontra_nome_time(nome: str, lst_times: list[Time]) -> list[Time]:
     '''
     A função vai receber um nome *nome: str* e uma lista de times *lst_times: list[Time]*,
     vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista
     e retornar a lista com os times.
     Exemplos:
-
+    >>> lst_times: list[Time] = [Time('Flamengo', 'Grêmio', 'Palmeiras'])
+    >>> encontra_nome_time('Flamengo', lst_times)
+    [Time('Flamengo', 'Grêmio', 'Palmeiras')]
+    >>> encontra_nome_time('Internacional', lst_times)
+    [Time('Flamengo', 'Grêmio', 'Palmeiras', 'Internacional')]
+    >>> encontra_nome_time('Grêmio', lst_times)
+    [Time('Flamengo', 'Grêmio', 'Palmeiras', 'Internacional')]
     '''
     time_enc: Time
     for i in lst_times:
@@ -53,19 +62,19 @@ def encontra_nome_time(nome: str, lst_times: list[Time]) -> Time:
     return time_novo
 
 
-def criterios(jogo: list[Time], criterio: CriterioDesempate) -> int:
+def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDesempate) -> list[Time]:
     '''
     A função vai receber um jogo *jogo: Jogo* e criterio *criterio: CriterioDesempate*,
-    vai calcular a tabela dos times em relação aos jogos e vai retornar um inteiro.
+    vai calcular a tabela dos times em relação aos jogos 
     Exemplos:
-
+    
     '''
     i: int = 0
-    anfiGol = 
-    visGol = 
+    anfiGol = criterio.anf_gol
+    visGol = criterio.vis_gol
     cont_anf = 0 
     cont_vis = 0
-    while i < len(jogo):
+    while i < len(lst_times):
         if criterio == CriterioDesempate.PONTO:
             if anfiGol > visGol:
                 cont_anf += 3
@@ -74,3 +83,11 @@ def criterios(jogo: list[Time], criterio: CriterioDesempate) -> int:
             else:
                 cont_anf += 1
                 cont_vis += 1
+
+
+def saldo_gol():
+    '''
+    A função vai calcular o saldo de gols.
+    '''
+
+
