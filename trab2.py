@@ -1,3 +1,4 @@
+import sys
 from enum import Enum, auto
 from dataclasses import dataclass
 
@@ -16,17 +17,16 @@ class CriterioDesempate(Enum):
 class Time:
     '''
     Essa classe vai desempenhar em relação ao times do Brasileirão, sendo eles:
-    nome, pontos, vitoria, empate, derrota, gol_marcado, gol_contra.
+    nome, pontos, vitorias, empate, derrota, gol_marcado, gol_contra.
     '''
     nome: str
     pontos: int
-    vitoria: int
-    empate: int
-    derrota: int
+    vitorias: int
+    #   empate: int
+    #   derrota: int
     gol_marcado: int
     gol_contra: int
-    jogos_anf: int
-    jogos_vis: int
+    jogos_anf: bool
 
 
 @dataclass
@@ -40,13 +40,14 @@ class Jogo:
     visitante: str
     vis_gol: int
 
-def encontra_nome_time(nome: str, lst_times: list[Time]) -> list[Time]:
+
+def encontra_nome_time(nome: str, lst_times: list[Time]) -> bool:
     '''
     A função vai receber um nome *nome: str* e uma lista de times *lst_times: list[Time]*,
     vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista
     e retornar a lista com os times.
     Exemplos:
-    >>> lst_times: list[Time] = [Time('Flamengo', 'Grêmio', 'Palmeiras'])
+    >>> lst_times: list[Time] = [Time('Flamengo', 'Grêmio', 'Palmeiras')]
     >>> encontra_nome_time('Flamengo', lst_times)
     [Time('Flamengo', 'Grêmio', 'Palmeiras')]
     >>> encontra_nome_time('Internacional', lst_times)
@@ -54,12 +55,10 @@ def encontra_nome_time(nome: str, lst_times: list[Time]) -> list[Time]:
     >>> encontra_nome_time('Grêmio', lst_times)
     [Time('Flamengo', 'Grêmio', 'Palmeiras', 'Internacional')]
     '''
-    time_enc: Time
-    for i in lst_times:
+    for i in range(len(lst_times)):
         if lst_times[i].nome == nome:
-            time_enc = lst_times[i]
-    time_novo = lst_times.append(time_enc)
-    return time_novo
+            return True
+    return False
 
 
 def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDesempate) -> list[Time]:
@@ -91,3 +90,41 @@ def saldo_gol():
     '''
 
 
+
+def main():
+    if len(sys.argv) < 2:
+        print('Nenhum nome de arquivo informado.')
+        sys.exit(1)
+
+    if len(sys.argv) > 2:
+        print('Muitos parâmetro. Informe apenas um nome de arquivo.')
+        sys.exit(1)
+
+    jogos = le_arquivo(sys.argv[1])
+
+    # TODO: solução da pergunta 1
+    # TODO: solução da pergunta 2
+    # TODO: solução da pergunta 3
+
+def le_arquivo(nome: str) -> list[str]:
+    '''
+    Lê o conteúdo do arquivo *nome* e devolve uma lista onde cada elemento     
+    representa uma linha.
+
+    Por exemplo, se o conteúdo do arquivo for
+    Sao-Paulo 1 Atletico-MG 2 
+    Flamengo 2 Palmeiras 1 
+
+    a resposta produzida é
+    [‘Sao-Paulo 1 Atletico-MG 2’, ‘Flamengo 2 Palmeiras 1’]
+    '''
+    try:
+        with open(nome) as f:
+            return f.readlines()
+           
+    except IOError as e:
+        print(f'Erro na leitura do arquivo "{nome}": {e.errno} - {e.strerror}.');
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()
