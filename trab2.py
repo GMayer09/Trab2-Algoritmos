@@ -43,7 +43,7 @@ def encontra_nome_time(nome: str, lst_times: list[Time]) -> None:
     vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista
     e retornar a lista com os times.
     Exemplos:
-    >>> lst_times: list[Time] = [Time('Flamengo', 'Grêmio', 'Palmeiras'])
+    >>> lst_times: list[Time] = [Time('Flamengo', 'Grêmio', 'Palmeiras')]
     >>> encontra_nome_time('Flamengo', lst_times)
     [Time('Flamengo', 'Grêmio', 'Palmeiras')]
     >>> encontra_nome_time('Internacional', lst_times)
@@ -64,9 +64,9 @@ def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDe
     
     '''
     i: int = 0
-    anfiGol = criterio.anf_gol
-    visGol = criterio.vis_gol
-    cont_anf = 0 
+    anfiGol = lst_jogos.anf_gol
+    visGol = lst_jogos.vis_gol
+    cont_anf = 0
     cont_vis = 0
     while i < len(lst_times):
         if criterio == CriterioDesempate.PONTO:
@@ -79,13 +79,22 @@ def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDe
                 cont_vis += 1
 
     # TODO: Fazer a função
-def saldo_gol():
+def saldo_gol(jogo: Jogo, lst_times: list[Time]):
     '''
-    A função vai calcular o saldo de gols.
+    A função vai calcular o saldo de gols dos times.
     '''
+    for i in range(len(lst_times)):
+            ngol_c = lst_times[i].gol_contra
+            ngol_m = lst_times[i].gol_marcado
+            lst_times[i].saldo_gol = ngol_m - ngol_c
+
 
     # TODO: Comentar, Exemplo. Mudar essa, só um exemplo por em quanto *equanto
 def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
+    '''
+    A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+
+    '''
     anf = jogo.anfitriao
     encontra_nome_time(anf, lst_times)
     vis = jogo.visitante
@@ -101,6 +110,26 @@ def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
             lst_times[i].gol_contra += anf_gol
 
     # TODO: Fazer funções de: Quantificar as vitorias
+    # TODO: Ver o que as funções quant_vitorias_time e atualiza_banco vão retornar(None?)
+
+def quant_vitorias_time(jogo: Jogo, lst_times: list[Time]):
+    '''
+    
+    '''
+
+
+def atualiza_banco(jogo: Jogo, lst_times: list[Time]):
+    '''
+    A função vai receber os jogos *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+    e vai atualizar o banco de dados.
+    '''
+    for i in lst_times:
+        anf = jogo.anfitriao
+        encontra_nome_time(anf, lst_times)
+        vis = jogo.visitante
+        encontra_nome_time(vis, lst_times)
+
+
 
 def main():
     if len(sys.argv) < 2:
