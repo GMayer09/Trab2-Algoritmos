@@ -1,6 +1,8 @@
 from enum import Enum, auto
 from dataclasses import dataclass
 import sys
+
+
 class CriterioDesempate(Enum):
     '''
     Essa classe vai desempenhar em relação ao critério de desempate dos jogos do Brasileirão,
@@ -21,9 +23,13 @@ class Time:
     nome: str
     pontos: int
     vitoria: int
+    empate: int
+    derrota: int
     gol_marcado: int
     gol_contra: int
-    anf: bool
+    saldo_gol: int
+    anf_jogos: int
+    anf_pontos: int
 
 
 @dataclass
@@ -36,6 +42,7 @@ class Jogo:
     anf_gol: int
     visitante: str
     vis_gol: int
+
 
 def encontra_nome_time(nome: str, lst_times: list[Time]) -> None:
     '''
@@ -53,15 +60,16 @@ def encontra_nome_time(nome: str, lst_times: list[Time]) -> None:
     '''
     for i in range(len(lst_times)):
         if lst_times[i].nome == nome:
-            lst_times.append(Time(nome, 0, 0, 0, 0, 0, 0, 0, 0))
+            lst_times.append(Time(nome, 0, 0, 0, 0, 0, 0))
 
     # TODO: Arrumar a questão dos jogos e fazer a função
-def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDesempate) -> list[Time]:
+def criterio_ponto(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDesempate):
     '''
-    A função vai receber um jogo *jogo: Jogo* e criterio *criterio: CriterioDesempate*,
-    vai calcular a tabela dos times em relação aos jogos 
+    A função vai receber uma lista de times *lst_times: list[Time]*, 
+    uma lista de jogos *lst_jogos: list[Jogo]*,e criterio *criterio: CriterioDesempate*,
+    vai calcular o criterio de pontos.
     Exemplos:
-    
+
     '''
     i: int = 0
     anfiGol = lst_jogos.anf_gol
@@ -81,7 +89,11 @@ def criterios(lst_times: list[Time], lst_jogos: list[Jogo], criterio: CriterioDe
     # TODO: Fazer a função
 def saldo_gol(jogo: Jogo, lst_times: list[Time]):
     '''
-    A função vai calcular o saldo de gols dos times.
+    A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+    vai calcular o saldo de gols do time.
+    Exemplos:
+    >>> 
+
     '''
     for i in range(len(lst_times)):
             ngol_c = lst_times[i].gol_contra
@@ -93,6 +105,9 @@ def saldo_gol(jogo: Jogo, lst_times: list[Time]):
 def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
     '''
     A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+    vai calcular a quantidade de gols marcados pelo anfitriao e pelo visitante.
+    Exemplos:
+    >>> 
 
     '''
     anf = jogo.anfitriao
@@ -108,14 +123,30 @@ def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
         if lst_times[i].nome == vis:
             lst_times[i].gol_marcado += vis_gol
             lst_times[i].gol_contra += anf_gol
-
+ 
     # TODO: Fazer funções de: Quantificar as vitorias
     # TODO: Ver o que as funções quant_vitorias_time e atualiza_banco vão retornar(None?)
 
 def quant_vitorias_time(jogo: Jogo, lst_times: list[Time]):
     '''
+    A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+    vai calcular a quantidade de vitorias do time.
+    Exemplos:
     
     '''
+    anf = jogo.anfitriao
+    encontra_nome_time(anf, lst_times)
+    vis = jogo.visitante
+    encontra_nome_time(vis, lst_times)
+    anf_gol = jogo.anf_gol
+    vis_gol = jogo.vis_gol
+    for i in range(len(lst_times)):
+        if lst_times[i].nome == anf:
+            if anf_gol > vis_gol:
+                lst_times[i].vitoria += 1
+        if lst_times[i].nome == vis:
+            if vis_gol > anf_gol:
+                lst_times[i].vitoria += 1
 
 
 def atualiza_banco(jogo: Jogo, lst_times: list[Time]):
