@@ -1,17 +1,5 @@
-from enum import Enum, auto
 from dataclasses import dataclass
 import sys
-
-
-class CriterioDesempate(Enum):
-    '''
-    Essa classe vai desempenhar em relação ao critério de desempate dos jogos do Brasileirão,
-    sendo por pontos, vitorias, saldo de gols e letra em ordem alfabética.
-    '''
-    PONTO = auto()
-    VITORIA = auto()
-    SALDO_GOL = auto()
-    LETRA = auto()
 
 
 @dataclass
@@ -36,13 +24,13 @@ class Jogo:
     Essa classe vai desempenhar em relação ao jogo do Brasileirão, tendo como atributos: anfitrião(Mandante),
     gols do anfitrião, visitante e gols do visitante.
     '''
-    anfitriao: str
+    anfitriao: Time
     anf_gol: int
-    visitante: str
+    visitante: Time
     vis_gol: int
 
 
-def encontra_nome_time(nome: str, lst_times: list[Time]) -> None:
+def encontra_nome_time(time: Time, lst_times: list[Time]) -> None:
     '''
     A função vai receber um nome *nome: str* e uma lista de times *lst_times: list[Time]*,
     vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista
@@ -59,10 +47,10 @@ def encontra_nome_time(nome: str, lst_times: list[Time]) -> None:
     '''
     ha_time: bool = False
     for i in range(len(lst_times)):
-        if lst_times[i].nome == nome:
+        if lst_times[i] == time:
             ha_time = True
     if ha_time == False:
-        lst_times.append(Time(nome, 0, 0, 0, 0, 0, 0, 0))
+        lst_times.append(time)
 
 
     # TODO: Arrumar a questão dos jogos e fazer a função
@@ -71,7 +59,15 @@ def criterio_ponto(jogo: Jogo, lst_times: list[Time]):
     A função vai receber uma lista de times *lst_times: list[Time]*,
     vai calcular o criterio de pontos.
     Exemplos:
-    >>> lst_times: 
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> criterio_ponto(jogo1, lst_times)
+    >>> lst_times
+    []
     '''
     anf = jogo.anfitriao
     encontra_nome_time(anf, lst_times)
@@ -83,23 +79,30 @@ def criterio_ponto(jogo: Jogo, lst_times: list[Time]):
         if lst_times[i].nome == anf:
             if anf_gol > vis_gol:
                 lst_times[i].pontos += 3
-            elif anf_gol == vis_gol:
-                lst_times[i].pontos += 1
-        if lst_times[i].nome == vis:
-            if vis_gol > anf_gol:
-                lst_times[i].pontos += 3
             elif vis_gol == anf_gol:
                 lst_times[i].pontos += 1
 
 
     # TODO: Fazer a função
-def saldo_gol(jogo: Jogo, lst_times: list[Time]):
+def saldo_gol(lst_times: list[Time]):
     '''
-    A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
+    A função vai receber uma lista de times *lst_times: list[Time]*,
     vai calcular o saldo de gols do time.
     Exemplos:
-    >>> 
-
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> jogo2: Jogo = Jogo(sao_paulo, 1, corinthians, 2)
+    >>> jogo3: Jogo = Jogo(gremio, 2, corinthians, 1)
+    >>> jogo4: Jogo = Jogo(flamengo, 1, sao_paulo, 2)
+    >>> lst_jogos: list[Jogo] = [jogo1, jogo2, jogo3, jogo4]
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> atualiza_banco(lst_jogos, lst_times)
+    >>> saldo_gol(lst_times)
+    >>> lst_times
+    [Time(nome='Flamengo', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome='Grêmio', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome='São Paulo', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome='Corinthians', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome=Time(nome='Flamengo', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome=Time(nome='Grêmio', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome=Time(nome='São Paulo', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), Time(nome=Time(nome='Corinthians', pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0), pontos=0, vitoria=0, gol_marcado=0, gol_contra=0, saldo_gol=0, anf_jogos=0, anf_pontos=0)]
     '''
     for i in range(len(lst_times)):
             ngol_c = lst_times[i].gol_contra
@@ -113,8 +116,15 @@ def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
     A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
     vai calcular a quantidade de gols marcados pelo anfitriao e pelo visitante.
     Exemplos:
-    >>> 
-
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> quant_gol_time(jogo1, lst_times)
+    >>> lst_times
+    []
     '''
     anf = jogo.anfitriao
     encontra_nome_time(anf, lst_times)
@@ -138,10 +148,13 @@ def quant_vitorias_time(jogo: Jogo, lst_times: list[Time]):
     A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
     vai calcular a quantidade de vitorias do time.
     Exemplos:
-    >>> jogo = 
-    >>> lst_times = [Time('Flamengo', 2, 'Grêmio', 2)]
-    >>> lst_times = [Time('Flamengo', 0, 0, 0, 0, 0, 0, 0), Time('Grêmio', 0, 0, 0, 0, 0, 0, 0), Time('Palmeiras', 0, 0, 0, 0, 0, 0, 0)]
-    >>> quant_vitorias_time(jogo, lst_times)
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> quant_vitorias_time(jogo1, lst_times)
     >>> lst_times
     []
     '''
@@ -164,25 +177,78 @@ def atualiza_banco(lst_jogos: list[Jogo], lst_times: list[Time], index: int = 0)
     '''
     A função vai receber os jogos *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
     e vai atualizar o banco de dados.
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> jogo2: Jogo = Jogo(sao_paulo, 1, corinthians, 2)
+    >>> jogo3: Jogo = Jogo(gremio, 2, corinthians, 1)
+    >>> jogo4: Jogo = Jogo(flamengo, 1, sao_paulo, 2)
+    >>> lst_jogos: list[Jogo] = [jogo1, jogo2, jogo3, jogo4]
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> atualiza_banco(lst_jogos, lst_times)
+    >>> lst_times
+    []
     '''
     if index >= len(lst_jogos):
         return
     jogo = lst_jogos[index]
-    encontra_nome_time(jogo.anfitriao, lst_times)
-    encontra_nome_time(jogo.visitante, lst_times)
+    encontra_nome_time(jogo.anfitriao.nome, lst_times)
+    encontra_nome_time(jogo.visitante.nome, lst_times)
+    criterio_ponto(jogo, lst_times)
+    saldo_gol(lst_times)
+    quant_gol_time(jogo, lst_times)
+    quant_vitorias_time(jogo, lst_times)
     atualiza_banco(lst_jogos, lst_times, index + 1)
 
 
+def bubble_sort(lst_times: list[Time]) -> None:
+    '''
+    A função vai receber uma lista de times *lst_times: list[Time]*,
+    vai ordenar usando o algoritmo Bubble Sort.
+    Exemplos:
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> jogo2: Jogo = Jogo(sao_paulo, 1, corinthians, 2)
+    >>> jogo3: Jogo = Jogo(gremio, 2, corinthians, 1)
+    >>> jogo4: Jogo = Jogo(flamengo, 1, sao_paulo, 2)
+    >>> lst_jogos: list[Jogo] = [jogo1, jogo2, jogo3, jogo4]
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> atualiza_banco(lst_jogos, lst_times)
+    >>> bubble_sort(lst_times)
+    >>> lst_times
+    []
+    '''
+    n = len(lst_times)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if lst_times[j].pontos > lst_times[j+1].pontos:
+                lst_times[j], lst_times[j+1] = lst_times[j+1], lst_times[j]
+            elif lst_times[j].pontos == lst_times[j+1].pontos:
+                if lst_times[j].vitoria > lst_times[j+1].vitoria:
+                    lst_times[j], lst_times[j+1] = lst_times[j+1], lst_times[j]
+                elif lst_times[j].vitoria == lst_times[j+1].vitoria:
+                    if lst_times[j].saldo_gol > lst_times[j+1].saldo_gol:
+                        lst_times[j], lst_times[j+1] = lst_times[j+1], lst_times[j]
+                    elif lst_times[j].saldo_gol == lst_times[j+1].saldo_gol:
+                        if lst_times[j].nome < lst_times[j+1].nome:
+                            lst_times[j], lst_times[j+1] = lst_times[j+1], lst_times[j]
 
-def sort(lst_times: list[Time]) -> None:
-    '''
-    '''
-    
 
 def aproveitamento_anf(time: Time) -> float:
     '''
     A função vai receber um time *time: Time* e vai calcular o aproveitamento do time.
     Exemplos:
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 3, 7)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 49, 133)
+    >>> aproveitamento_anf(flamengo)
+    0.7777777777777778
+    >>> aproveitamento_anf(gremio)
+    0.9047619047619048
     '''
     return time.anf_pontos / (time.anf_jogos*3)
 
@@ -192,7 +258,20 @@ def melhor_aproveitamento(lst_times: list[Time]) -> None:
     A função vai receber uma lista de times *lst_times: list[Time]*,
     vai ordenar a lista usando o algoritmo Bubble Sort com base no aproveitamento do time.
     Exemplos:
-    
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> jogo2: Jogo = Jogo(sao_paulo, 1, corinthians, 2)
+    >>> jogo3: Jogo = Jogo(gremio, 2, corinthians, 1)
+    >>> jogo4: Jogo = Jogo(flamengo, 1, sao_paulo, 2)
+    >>> lst_jogos: list[Jogo] = [jogo1, jogo2, jogo3, jogo4]
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> atualiza_banco(lst_jogos, lst_times)
+    >>> melhor_aproveitamento(lst_times)
+    >>> lst_times
+    []
     '''
     n = len(lst_times)
     for i in range(n - 1):
@@ -201,9 +280,40 @@ def melhor_aproveitamento(lst_times: list[Time]) -> None:
                 lst_times[j], lst_times[j+1] = lst_times[j+1], lst_times[j]
 
 
-def melhor_defesa() -> None:
+def melhor_defesa(lst_times: list[Time]) -> list[Time]:
     '''
+    A função vai receber um lista de times *lst_times: list[Time]*,
+    vai ordenar usando recursão e retornar a lista dos times com a melhor defesa.
+    Exemplos:
+    >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
+    >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
+    >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
+    >>> corinthians: Time = Time('Corinthians', 0, 0, 0, 0, 0, 0, 0)
+    >>> jogo1: Jogo = Jogo(flamengo, 2, gremio, 2)
+    >>> jogo2: Jogo = Jogo(sao_paulo, 1, corinthians, 2)
+    >>> jogo3: Jogo = Jogo(gremio, 2, corinthians, 1)
+    >>> jogo4: Jogo = Jogo(flamengo, 1, sao_paulo, 2)
+    >>> lst_jogos: list[Jogo] = [jogo1, jogo2, jogo3, jogo4]
+    >>> lst_times: list[Time] = [flamengo, gremio, sao_paulo, corinthians]
+    >>> atualiza_banco(lst_jogos, lst_times)
+    >>> melhor_defesa(lst_times)
+    >>> lst_times
+    []
     '''
+    if len(lst_times) <= 1:
+        return lst_times
+
+    melhores_times_resto = melhor_defesa(lst_times[1:])
+
+    primeiro_time = lst_times[0]
+    gols_sofridos_melhor_defesa = melhores_times_resto[0].gol_contra
+
+    if primeiro_time.gol_contra < gols_sofridos_melhor_defesa:
+        return [primeiro_time]
+    elif primeiro_time.gol_contra == gols_sofridos_melhor_defesa:
+        return [primeiro_time] + melhores_times_resto
+    else:
+        return melhores_times_resto
 
 
 def main():
