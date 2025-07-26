@@ -32,9 +32,8 @@ class Jogo:
 
 def encontra_nome_time(time: Time, lst_times: list[Time]) -> None:
     '''
-    A função vai receber um nome *nome: str* e uma lista de times *lst_times: list[Time]*,
-    vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista
-    e retornar a lista com os times.
+    A função vai receber um nome *nome: Time* e uma lista de times *lst_times: list[Time]*,
+    vai verificar se tem um time na lista, caso contrário vai adicionar esse time na lista.
     Exemplos:
     >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
     >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
@@ -53,10 +52,9 @@ def encontra_nome_time(time: Time, lst_times: list[Time]) -> None:
         lst_times.append(time)
 
 
-    # TODO: Arrumar a questão dos jogos e fazer a função
 def criterio_ponto(jogo: Jogo, lst_times: list[Time]):
     '''
-    A função vai receber uma lista de times *lst_times: list[Time]*,
+    A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
     vai calcular o criterio de pontos.
     Exemplos:
     >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
@@ -83,10 +81,9 @@ def criterio_ponto(jogo: Jogo, lst_times: list[Time]):
                 lst_times[i].pontos += 1
 
 
-    # TODO: Fazer a função
 def saldo_gol(lst_times: list[Time]):
     '''
-    A função vai receber uma lista de times *lst_times: list[Time]*,
+    A função vai receber uma lista de times *lst_times: list[Time]* e
     vai calcular o saldo de gols do time.
     Exemplos:
     >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
@@ -110,7 +107,6 @@ def saldo_gol(lst_times: list[Time]):
             lst_times[i].saldo_gol = ngol_m - ngol_c
 
 
-    # TODO: Comentar, Exemplo. Mudar essa, só um exemplo por em quanto *equanto
 def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
     '''
     A função vai receber um jogo *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
@@ -140,8 +136,6 @@ def quant_gol_time(jogo: Jogo, lst_times: list[Time]) -> None:
             lst_times[i].gol_marcado += vis_gol
             lst_times[i].gol_contra += anf_gol
  
-    # TODO: Fazer os exemplos da quant_vitorias_time
-    # TODO: Corrigir a atualiza_banco vão retornar(None?)
 
 def quant_vitorias_time(jogo: Jogo, lst_times: list[Time]):
     '''
@@ -175,8 +169,9 @@ def quant_vitorias_time(jogo: Jogo, lst_times: list[Time]):
 
 def atualiza_banco(lst_jogos: list[Jogo], lst_times: list[Time], index: int = 0):
     '''
-    A função vai receber os jogos *jogo: Jogo* e uma lista de times *lst_times: list[Time]*,
-    e vai atualizar o banco de dados.
+    A função vai receber uma lista de jogos *lst_jogos: list[Jogo]*,
+    uma lista de times *lst_times: list[Time]* e um index *index: int = 0*,
+    e vai atualizar o banco de dados das funções anteriores.
     >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 0, 0)
     >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 0, 0)
     >>> sao_paulo: Time = Time('São Paulo', 0, 0, 0, 0, 0, 0, 0)
@@ -241,7 +236,8 @@ def bubble_sort(lst_times: list[Time]) -> None:
 
 def aproveitamento_anf(time: Time) -> float:
     '''
-    A função vai receber um time *time: Time* e vai calcular o aproveitamento do time.
+    A função vai receber um time *time: Time*, vai calcular o aproveitamento do time
+    e vai retornar um float com o valor do aproveitamento.
     Exemplos:
     >>> flamengo: Time = Time('Flamengo', 0, 0, 0, 0, 0, 3, 7)
     >>> gremio: Time = Time('Grêmio', 0, 0, 0, 0, 0, 49, 133)
