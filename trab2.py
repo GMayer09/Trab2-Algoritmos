@@ -294,20 +294,16 @@ def print_melhor_aproveitamento(lst_times: list[Time]) -> None:
     Calculando o a mediana *mid_point* e criando uma lista só com os valores de aproveitamento maiores que a mediana.
     '''
     lst_nova = []
-    mid_point = 0.0
     _max = 0.0
-    _min = 0.0
     for time in lst_times:
         if aproveitamento_anf(time) > _max:
             _max = aproveitamento_anf(time)
-        if aproveitamento_anf(time) < _min:
-            _min = aproveitamento_anf(time)
-    mid_point = (_max + _min) / 2
+
     for time in lst_times:
-        if aproveitamento_anf(time) >= mid_point:
+        if aproveitamento_anf(time) >= _max:
             lst_nova.append(time)
     melhor_aproveitamento(lst_nova)
-    print("Melhor Aproveitamento afitrião:")
+    print("Melhor Aproveitamento anfitrião:")
     for time in lst_nova:
         print(f"{time.nome}: {int(aproveitamento_anf(time) * 100)}%")
 
@@ -423,12 +419,9 @@ def main():
     print("Classficação do Brasileirão:")
 
     max_len = len_max(lst_times)
-    print(f"TIME{' ' * (max_len - 3)}P   V   S")
+    print(f"TIME{' ' * (max_len - 3)}P    V    S")
     for time in lst_times:
-        if time.pontos >= 10:
-            print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}  {time.vitoria}   {time.saldo_gol}")
-        else:
-            print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}   {time.vitoria}   {time.saldo_gol}")
+        print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}{' ' * (5 - len(str(time.pontos)))}{time.vitoria}{' ' * (5 - len(str(time.vitoria)))}{time.saldo_gol}")
     print('\n')
     
     # solução da pergunta 2
@@ -439,9 +432,9 @@ def main():
     lst_nova = melhor_defesa(lst_times)
     print("Melhor defesa:")
     max_len = len_max(lst_nova)
-    print(f"TIME{' ' * (max_len - 3)}P   V   S")
+    print(f"TIME{' ' * (max_len - 3)}P    V    S")
     for time in lst_nova:
-        print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}   {time.vitoria}   {time.saldo_gol}")
+        print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}{' ' * (5 - len(str(time.pontos)))}{time.vitoria}{' ' * (5 - len(str(time.vitoria)))}{time.saldo_gol}")
     
 
 
