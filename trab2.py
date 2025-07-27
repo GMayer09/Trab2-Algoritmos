@@ -417,6 +417,7 @@ def main():
     lst_times = []
     lst_jogos = conv_lst_jogos(jogos)
     atualiza_banco(lst_jogos, lst_times)
+
     # solução da pergunta 1
     bubble_sort(lst_times)
     print("Classficação do Brasileirão:")
@@ -424,10 +425,16 @@ def main():
     max_len = len_max(lst_times)
     print(f"TIME{' ' * (max_len - 3)}P   V   S")
     for time in lst_times:
-        print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}   {time.vitoria}   {time.saldo_gol}")
+        if time.pontos >= 10:
+            print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}  {time.vitoria}   {time.saldo_gol}")
+        else:
+            print(f"{time.nome}{' ' * (max_len - len(time.nome) + 1)}{time.pontos}   {time.vitoria}   {time.saldo_gol}")
+    print('\n')
     
     # solução da pergunta 2
     print_melhor_aproveitamento(lst_times)
+    print('\n')
+
     # solução da pergunta 3
     lst_nova = melhor_defesa(lst_times)
     print("Melhor defesa:")
